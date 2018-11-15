@@ -44,14 +44,30 @@ function card_back(card) {
   );
 }
 
-function append_card(_card, json) {
+function rand_card(json) {
   const values = Object.values(json);
-  const card = values[ Math.floor( Math.random() * values.length ) ];
+  return values[ Math.floor( Math.random() * values.length ) ];
+}
+
+function rand_card_reading(json) {
+  const card = rand_card(json);
+  return card.reading[ Math.floor( Math.random() * card.reading.length ) ];
+}
+
+function rand_reading(card) {
+  return card.reading[ Math.floor( Math.random() * card.reading.length ) ];
+}
+
+function append_card(_card, json) {
+  const card = rand_card(json);
+  const correct = rand_reading(card);
+  const options = [ correct, rand_card_reading(json), rand_card_reading(json) ]
+    .sort( () => Math.random() - Math.random() );
 
   card.examples = _card.examples;
   card.level    = 'N'+card.level;
-  card.options  = Array(3).fill(card.reading[0]);
-  card.correct  = card.options[0];
+  card.options  = options;
+  card.correct  = correct;
   card.readings = card.reading.slice(0, 2).join(', ');
 
   const elem = div('card-container').append(
