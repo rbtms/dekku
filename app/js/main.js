@@ -70,7 +70,7 @@ function main() {
 
   $.getJSON('./test2.json', (json) => append_card(card, json))
 
-//  append_card(card);
+  append_card(card);
 //  const json = get_json('./test2.js');
 //console.log(json
 }
