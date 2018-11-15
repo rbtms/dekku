@@ -21,6 +21,7 @@ function options_elem(options, correct) {
 }
 
 function example_elem(example) {
+console.log(example)
   return span('example', example)
 }
 
@@ -56,7 +57,7 @@ function append_card(card, json) {
   );
 
   $('body').append(elem);
-console.log(json)
+  console.log(json);
 }
 
 function main() {
@@ -65,7 +66,7 @@ function main() {
     level   : 'N5',
     correct : 'だい',
     options : ['だい', 'だい', 'だい'],
-    examples: ['Blah blah ', 'Oh blah blah', 'More blah blah'],
+    examples: ['大学生です。', '大変疲れた。', '大きくなる。'],
   };
 
   $.getJSON('./test2.json', (json) => append_card(card, json))
