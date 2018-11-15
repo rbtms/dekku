@@ -1,7 +1,3 @@
-function get_json(path) {
-  return $.getJSON(path);
-}
-
 function div(_class)        { return $( document.createElement('DIV') ).addClass(_class); }
 function span(_class, text) { return $( document.createElement('SPAN') ).addClass(_class).text(text); }
 function card_face(name)    { return div(name).addClass('face'); }
@@ -43,12 +39,21 @@ function card_back(card) {
   return card_face('back').append(
     span('kanji', card.kanji),
     span('level', card.level),
-    span('reading', card.correct),
+    span('reading', card.readings),
     examples_elem(card.examples)
   );
 }
 
-function append_card(card, json) {
+function append_card(_card, json) {
+  const values = Object.values(json);
+  const card = values[ Math.floor( Math.random() * values.length ) ];
+
+  card.examples = _card.examples;
+  card.level    = 'N'+card.level;
+  card.options  = Array(3).fill(card.reading[0]);
+  card.correct  = card.options[0];
+  card.readings = card.reading.slice(0, 2).join(', ');
+
   const elem = div('card-container').append(
     div('card').append(
       card_front(card),
@@ -69,11 +74,9 @@ function main() {
     examples: ['大学生です。', '大変疲れた。', '大きくなる。'],
   };
 
-  $.getJSON('./test2.json', (json) => append_card(card, json))
+  $.getJSON('./data/n3.json', (json) => append_card(card, json))
 
-  append_card(card);
-//  const json = get_json('./test2.js');
-//console.log(json
+//  append_card(card);
 }
 
 document.addEventListener('DOMContentLoaded', main);
