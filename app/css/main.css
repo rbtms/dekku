@@ -5,8 +5,9 @@ span {
 body {
   background: #111111;
 }
+
 .flip-card {
-  transform: rotateY(180deg);
+  transform: rotateY(-180deg);
 }
 
 .card-container {
@@ -29,8 +30,6 @@ body {
   backface-visibility : hidden;
   transform-style     : preserve-3d;
   transition          : all 1s ease-in-out;
-  
-  cursor: pointer;
 }
 
 .kanji {
@@ -111,6 +110,8 @@ body {
   
   border        : 1px solid black;
   border-radius : 0px 10px 0px 0px;
+  
+  cursor: pointer;
 }
 
 .face.back {

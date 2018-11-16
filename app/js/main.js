@@ -1,98 +1,68 @@
-function div(_class)        { return $( document.createElement('DIV') ).addClass(_class); }
-function span(_class, text) { return $( document.createElement('SPAN') ).addClass(_class).text(text); }
-function card_face(name)    { return div(name).addClass('face'); }
+import Card from './components/Card.js';
 
-function option_elem(option, correct) {
-  return span('reading-option', option).on('click', e => {
-    if(option === correct) {
-      $('.card').addClass('flip-card')
-    }
+class RandCard {
+  constructor(deck) {
+    const card = this.rand_card(deck);
+    this.level = card.level;
+    this.kanji = card.kanji;
+    this.correct = this.rand_reading(card);
+    this.options = [this.correct, this.rand_card_reading(deck), this.rand_card_reading(deck)].sort(() => Math.random() - Math.random());
+    this.readings = this.correct; ////
+
+    this.examples = ['a', 'b', 'c'];
+  }
+
+  rand(max) {
+    return Math.floor(Math.random() * max);
+  }
+
+  rand_card_reading(deck) {
+    return this.rand_reading(this.rand_card(deck));
+  }
+
+  rand_reading(card) {
+    console.log(card);
+    return card.reading[this.rand(card.reading.length)];
+  }
+
+  rand_card(deck) {
+    const values = Object.values(deck);
+    return values[this.rand(values.length)];
+  }
+
+}
+
+function append_card(deck) {
+  const card = new RandCard(deck);
+  const elem = $('.card-container')[0];
+  ReactDOM.render(React.createElement(Card, {
+    card: card
+  }), elem);
+}
+
+function format_deck(files) {
+  console.log(files);
+  append_card(files.n2);
+}
+
+async function load_json() {
+  const path = './data/n';
+  const files = [2, 3, 4, 5].map(n => `${path}${n}.json`);
+  const n2 = await fetch(files[0]).then(res => res.json());
+  const n3 = await fetch(files[1]).then(res => res.json());
+  const n4 = await fetch(files[2]).then(res => res.json());
+  const n5 = await fetch(files[3]).then(res => res.json()); //  const n2 = await fetch(files[0]).then( res => res.json() );
+
+  format_deck({
+    n2,
+    n3,
+    n4,
+    n5
   });
 }
 
-function options_elem(options, correct) {
-  return div('reading-options').append( ...options.map( option =>
-    option_elem(option, correct)
-  ));
-}
-
-function example_elem(example) {
-console.log(example)
-  return span('example', example)
-}
-
-function examples_elem(examples) {
-  return div('examples').append( ...examples.map( example =>
-    example_elem(example)
-  ));
-}
-
-function card_front(card) {
-  return card_face('front').append(
-    span('kanji', card.kanji),
-    span('level', card.level),
-    options_elem(card.options, card.correct)
-  );
-}
-
-function card_back(card) {
-  return card_face('back').append(
-    span('kanji', card.kanji),
-    span('level', card.level),
-    span('reading', card.readings),
-    examples_elem(card.examples)
-  );
-}
-
-function rand_card(json) {
-  const values = Object.values(json);
-  return values[ Math.floor( Math.random() * values.length ) ];
-}
-
-function rand_card_reading(json) {
-  const card = rand_card(json);
-  return card.reading[ Math.floor( Math.random() * card.reading.length ) ];
-}
-
-function rand_reading(card) {
-  return card.reading[ Math.floor( Math.random() * card.reading.length ) ];
-}
-
-function append_card(_card, json) {
-  const card = rand_card(json);
-  const correct = rand_reading(card);
-  const options = [ correct, rand_card_reading(json), rand_card_reading(json) ]
-    .sort( () => Math.random() - Math.random() );
-
-  card.examples = _card.examples;
-  card.level    = 'N'+card.level;
-  card.options  = options;
-  card.correct  = correct;
-  card.readings = card.reading.slice(0, 2).join(', ');
-
-  const elem = div('card-container').append(
-    div('card').append(
-      card_front(card),
-      card_back(card)
-    )
-  );
-
-  $('body').append(elem);
-  console.log(json);
-}
-
 function main() {
-  const card = {
-    kanji   : '大',
-    level   : 'N5',
-    correct : 'だい',
-    options : ['だい', 'だい', 'だい'],
-    examples: ['大学生です。', '大変疲れた。', '大きくなる。'],
-  };
-
-  $.getJSON('./data/n3.json', (json) => append_card(card, json))
-
-//  append_card(card);
+  load_json();
 }
 
 document.addEventListener('DOMContentLoaded', main);
