@@ -9,10 +9,13 @@ body {
 .flip-card {
   transform: rotateY(-180deg);
 }
+.flip-again {
+  transform: rotateY(-360deg);
+}
 
-.card-container {
+.deck-container {
   margin: auto;
-  padding: auto;
+  //padding: auto;
   
   position: relative;
   top: 100px;
@@ -32,6 +35,12 @@ body {
   transition          : all 1s ease-in-out;
 }
 
+.kanji-div {
+  position: relative;
+  width: 100%;
+  height: 50%;
+}
+
 .kanji {
   position: relative;
   top: 30px;
@@ -48,7 +57,7 @@ body {
   right : 5px;
   
   font-size: 25px;
-  color: blue;
+  //color: blue;
   margin: 4px;
   
   //border: 1px solid black;
@@ -56,46 +65,96 @@ body {
 }
 
 .reading-options {
-  margin-top: 60px;
+  padding-top: 25px;
   text-align: center;
 }
 
-.reading-option {
+.reading-option-div {
   position: relative;
   display: block;
   
-  font-size: 35px;
+  padding-top: 10px;
 }
 
-.reading {
+.option-clicked-nodisplay,
+.option-clicked-correct,
+.option-clicked-incorrect {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  
+  top: 20px;
+  left: 50px;
+  
+  border: 1px solid black;
+}
+
+.option-clicked-nodisplay {
+  //border: 1px solid black;
+  background: black;
+  border-radius: 100%;
+  width: 10px;
+  height: 10px;
+}
+
+.option-clicked-correct {
+  border: 3px solid green;
+  background: white;
+  border-radius: 100%;
+  width: 20px;
+  height: 20px;
+  
+}
+.option-clicked-incorrect {
+  background: red;
+}
+
+.reading-option {
+  padding-top: 10px;
+  font-size: 33px;
+}
+
+.meaning-div {
+  position: relative;
+  top: 10px;
+  width: 100%;
+}
+
+.meaning {
+  font-size: 17px;
+}
+
+.reading-table {
   position: relative;
   width: 100%;
+  height: 40%;
   
-  clear: left;
-  float: left;
-  
+  top: 30px;
+  //border: 1px solid black;
+}
+.reading-row td, .reading-header td {
   position: relative;
-  
-  font-size: 30px;
-  
-  top: 40px;
+  width: 50%;
+  height: 10px;
 }
 
-.examples {
+tr {
   position: relative;
-  top: 65px;
-  width: 100%;
+  height: 0px;
+  width: 0px;
+  margin: 0;
+  padding: 0;
+  //border: 2px solid green;
 }
 
-.example {
-  display: flex;
-  
+.reading-header td {
+  font-size: 25px;
+  //border: 1px solid red;
+}
+
+.reading-row td {
   font-size: 23px;
-  
-  height: 35px;
-  width: 100%;
-  
-  padding-left: 87px;
+  //border: 1px solid blue;
 }
 
 .face {

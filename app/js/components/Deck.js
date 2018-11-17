@@ -67,7 +67,18 @@ class Option extends React.Component {
       this.setState({
         can_click: false
       });
-      setTimeout(() => this._parent.toggleFlip(), 1000);
+
+      if (this.is_correct) {
+        this._parent.add_point();
+      }
+
+      setTimeout(() => {
+        this._parent.toggle_flip();
+
+        setTimeout(() => this.setState({
+          can_click: true
+        }), 1000);
+      }, 500);
     }
   }
 
@@ -122,6 +133,7 @@ function Examples(props) {
 }
 
 function FrontFace(props) {
+  console.log('frontface', props);
   return React.createElement("div", {
     class: "front face"
   }, React.createElement(Level, {
@@ -138,7 +150,8 @@ function FrontFace(props) {
 function BackFace(props) {
   console.log('backface', props);
   return React.createElement("div", {
-    class: "back face"
+    class: "back face",
+    onClick: () => props._parent.toggle_flip()
   }, React.createElement(Level, {
     level: props.level
   }), React.createElement(Kanji, {
@@ -150,36 +163,76 @@ function BackFace(props) {
   }));
 }
 
-class Card extends React.Component {
+export default class Deck extends React.Component {
   constructor(props) {
     super(props);
-    this.state = props.card;
-    this.state.isFlipped = false;
+    this.FRONT = 0;
+    this.BACK = 1;
+    this.all = props.all;
+    this.deck = props.deck.slice();
+    this.card = this.draw_card();
+    this.points = 0;
+    this.state = {
+      card: this.card,
+      front: Object.assign({}, this.card),
+      back: Object.assign({}, this.card),
+      flip_degrees: 0,
+      flip_state: 0
+    };
   }
 
-  toggleFlip() {
+  draw_card(deck) {
+    console.log('draw', this.deck[0]);
+    if (this.deck.length) return this.deck.shift();else alert(`Score: ${this.points}/10`);
+  }
+
+  add_point() {
+    this.points++;
+  }
+
+  toggle_flip() {
+    const timeout = this.flip_state === this.FRONT ? 1000 : 500;
+    const flip_state = !this.state.flip_state;
+    const flip_degrees = this.state.flip_degrees - 180;
     this.setState({
-      isFlipped: !this.state.isFlipped
+      flip_state,
+      flip_degrees
     });
+    setTimeout(() => {
+      if (flip_state) {
+        const card = this.draw_card();
+        this.setState({
+          card: card,
+          front: Object.assign({}, card)
+        });
+      } else {
+        this.setState({
+          back: Object.assign({}, this.state.card)
+        });
+      }
+    }, timeout);
   }
 
   render() {
     return React.createElement("div", {
-      class: this.state.isFlipped ? 'card flip-card' : 'card'
+      class: "card",
+      style: {
+        transform: `rotateY(${this.state.flip_degrees}deg)`
+      }
     }, React.createElement(FrontFace, {
-      level: this.state.level,
-      kanji: this.state.kanji,
-      options: this.state.options,
-      correct: this.state.correct,
-      _parent: this
+      level: this.state.front.level,
+      kanji: this.state.front.kanji,
+      options: this.state.front.options,
+      correct: this.state.front.correct,
+      _parent: this,
+      key: Math.random()
     }), React.createElement(BackFace, {
-      level: this.state.level,
-      kanji: this.state.kanji,
-      meaning: this.state.meaning,
-      reading: this.state.reading
+      level: this.state.back.level,
+      kanji: this.state.back.kanji,
+      meaning: this.state.back.meaning,
+      reading: this.state.back.reading,
+      _parent: this
     }));
   }
 
 }
-
-export default Card;
