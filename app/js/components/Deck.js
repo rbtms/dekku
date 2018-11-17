@@ -183,7 +183,10 @@ export default class Deck extends React.Component {
 
   draw_card(deck) {
     console.log('draw', this.deck[0]);
-    if (this.deck.length) return this.deck.shift();else alert(`Score: ${this.points}/10`);
+    if (this.deck.length) return this.deck.shift();else {
+      alert(`Score: ${this.points}/10`);
+      return this.card;
+    }
   }
 
   add_point() {
