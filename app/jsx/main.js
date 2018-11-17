@@ -60,10 +60,18 @@ function append_deck(deck, all) {
 }
 
 function format_deck(files) {
-  const entries = files.n2;
+  const url = window.location.toString();
+
+  const entries = url.includes('file=')
+    ? files[ url.match(/file=(n\d+)/)[1] ]
+    : files.n3;
+
+  const deck_size = url.includes('deck_size=')
+    ? url.match(/deck_size=(\d+)/)[1]
+    : 10;
 
   const deck = Object.keys(entries).map( key => new Card(entries[key], entries) )
-    .sort( () => Math.random() - Math.random() ).slice(0, 10);
+    .sort( () => Math.random() - Math.random() ).slice(0, deck_size);
 
   console.log(deck);
 
