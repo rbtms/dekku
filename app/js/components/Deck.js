@@ -166,11 +166,13 @@ function BackFace(props) {
 export default class Deck extends React.Component {
   constructor(props) {
     super(props);
+    this._parent = props._parent;
     this.FRONT = 0;
     this.BACK = 1;
     this.all = props.all;
     this.deck = props.deck.slice();
     this.card = this.draw_card();
+    this.deck_size = this.deck.length + 1;
     this.points = 0;
     this.state = {
       card: this.card,
@@ -184,7 +186,7 @@ export default class Deck extends React.Component {
   draw_card(deck) {
     console.log('draw', this.deck[0]);
     if (this.deck.length) return this.deck.shift();else {
-      alert(`Score: ${this.points}/10`);
+      alert(`Score: ${this.points}/${this.deck_size}`);
       return this.card;
     }
   }
@@ -203,12 +205,19 @@ export default class Deck extends React.Component {
     });
     setTimeout(() => {
       if (flip_state) {
+        // Back
+        const prev_card = this.state.card;
         const card = this.draw_card();
         this.setState({
           card: card,
           front: Object.assign({}, card)
         });
+        this.msg_parent({
+          msg: 'update_examples',
+          card: prev_card
+        });
       } else {
+        // Front
         this.setState({
           back: Object.assign({}, this.state.card)
         });
@@ -216,8 +225,14 @@ export default class Deck extends React.Component {
     }, timeout);
   }
 
+  msg_parent(msg) {
+    this._parent.msg(msg);
+  }
+
   render() {
     return React.createElement("div", {
+      class: "deck-container"
+    }, React.createElement("div", {
       class: "card",
       style: {
         transform: `rotateY(${this.state.flip_degrees}deg)`
@@ -235,7 +250,7 @@ export default class Deck extends React.Component {
       meaning: this.state.back.meaning,
       reading: this.state.back.reading,
       _parent: this
-    }));
+    })));
   }
 
 }

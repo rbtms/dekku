@@ -134,12 +134,15 @@ export default class Deck extends React.Component {
   constructor(props) {
     super(props);
 
+    this._parent = props._parent;
+
     this.FRONT = 0;
     this.BACK  = 1;
 
     this.all  = props.all;
     this.deck = props.deck.slice();
     this.card = this.draw_card();
+    this.deck_size = this.deck.length+1;
     
     this.points = 0;
 
@@ -158,7 +161,7 @@ export default class Deck extends React.Component {
     if( this.deck.length )
       return this.deck.shift();
     else {
-      alert(`Score: ${this.points}/10`);
+      alert(`Score: ${this.points}/${this.deck_size}`);
       return this.card;
     }
   }
@@ -175,39 +178,48 @@ export default class Deck extends React.Component {
     this.setState({flip_state, flip_degrees});
 
     setTimeout( () => {
-      if(flip_state) {
+      if(flip_state) { // Back
+        const prev_card = this.state.card;
         const card = this.draw_card();
 
         this.setState({
           card: card,
           front: Object.assign({}, card)
         });
+
+        this.msg_parent({ msg: 'update_examples', card: prev_card });
       }
-      else {
+      else { // Front
         this.setState({
           back: Object.assign({}, this.state.card)
-        })
+        });
       }
     }, timeout);
   }
 
+  msg_parent(msg) {
+    this._parent.msg(msg);
+  }
+
   render() {
-    return <div class='card' style={{ transform: `rotateY(${this.state.flip_degrees}deg)` }}>
-      <FrontFace
-        level={this.state.front.level}
-        kanji={this.state.front.kanji}
-        options={this.state.front.options}
-        correct={this.state.front.correct}
-        _parent={this}
-        key={Math.random()}
-      />
-      <BackFace
-        level={this.state.back.level}
-        kanji={this.state.back.kanji}
-        meaning={this.state.back.meaning}
-        reading={this.state.back.reading}
-        _parent={this}
-      />
+    return <div class='deck-container'>
+      <div class='card' style={{ transform: `rotateY(${this.state.flip_degrees}deg)` }}>
+        <FrontFace
+          level={this.state.front.level}
+          kanji={this.state.front.kanji}
+          options={this.state.front.options}
+          correct={this.state.front.correct}
+          _parent={this}
+          key={Math.random()}
+        />
+        <BackFace
+          level={this.state.back.level}
+          kanji={this.state.back.kanji}
+          meaning={this.state.back.meaning}
+          reading={this.state.back.reading}
+          _parent={this}
+        />
+      </div>
     </div>;
   }
 }

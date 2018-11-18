@@ -13,15 +13,67 @@ body {
   transform: rotateY(-360deg);
 }
 
+@media only screen and (max-width: 400px) {
+  .deck-container {
+    width: 350px;
+    height: 460px;
+    top: 100px;
+    
+    margin: auto;
+  }
+}
+
+@media only screen and (min-width: 500px) {
+  body {
+    overflow-y: hidden;
+  }
+  .deck-container {
+    width: 300px;
+    height: 400px;
+    top: 150px;
+    left: 200px;
+  }
+  .examples-container {
+    position: relative;
+    overflow-y: auto;
+    
+    top: -360px;
+    left: 700px;
+  
+    height: 715px;
+    width: 780px;
+    background: white;
+  }
+  .example-container {
+    display: block;
+    margin-right: 20px;
+  }
+  .example-jpn {
+    position: relative;
+    display: block;
+    
+    left: 20px;
+    padding-top: 20px;
+    
+    font-size: 25px;
+  }
+  .example-eng {
+    position: relative;
+    display: block;
+    font-size: 17px;
+    
+    left: 20px;
+    padding-top: 5px;
+  }
+}
+
+body {
+  display: flex;
+  align-content: middle;
+}
+
 .deck-container {
-  margin: auto;
-  //padding: auto;
-  
   position: relative;
-  top: 100px;
-  
-  width: 300px;
-  height: 400px;
   
   perspective: 600px;
 }
@@ -74,6 +126,32 @@ body {
   display: block;
   
   padding-top: 10px;
+}
+
+.instructions {
+  position: relative;
+  left: 200px;
+  top: 250px;
+  margin: auto;
+}
+
+.instructions ul {
+  padding-top: 10px;
+  line-height: 18px;
+}
+
+.instruction-header {
+  margin: auto;
+  left: 0;
+  
+  font-size: 35px;
+}
+.instructions-text {
+  font-size: 20px;
+  padding-top: 20px;
+}
+ul {
+  font-size: 15px;
 }
 
 .option-clicked-nodisplay,
@@ -132,6 +210,7 @@ body {
   top: 30px;
   //border: 1px solid black;
 }
+
 .reading-row td, .reading-header td {
   position: relative;
   width: 50%;

@@ -1,5 +1,33 @@
 
-import Deck from './components/Deck.js';
+import Deck     from './components/Deck.js';
+import Examples from './components/Examples.js';
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.deck = props.deck;
+    this.all  = props.all;
+
+    this.state = { card: {} };
+  }
+ 
+  msg(json) {
+    switch(json.msg) {
+      case 'update_examples': {
+        this.setState({ card: json.card });
+      }
+    }
+  }
+
+  render() {
+    return <div class='app'>
+      <Deck deck={this.deck} all={this.all} _parent={this}/>
+      <Examples card={this.state.card} _parent={this} key={Math.random()}/>
+    </div>;
+  }
+}
+
 
 class Card {
   constructor(entry, entries) {
@@ -22,8 +50,6 @@ class Card {
         this.rand_card_reading(entries, option_type)
     ]
     .sort( () => Math.random() - Math.random() );
-    
-    this.examples = ['a', 'b', 'c'];
   }
 
   rand(max) {
@@ -51,44 +77,77 @@ class Card {
         return entry;
     }
   }
+
+  add_examples(trans) {
+    this.trans    = trans;
+    this.examples = Object.keys(trans).filter( jpn => jpn.includes(this.kanji) );
+  }
 }
 
 function append_deck(deck, all) {
-  const elem = $('.deck-container')[0];
+  const elem = $('#app')[0];
 
-  ReactDOM.render(<Deck deck={deck} all={all}/>, elem);
+  ReactDOM.render(<App deck={deck} all={all}/>, document.body);
+}
+
+function parse_entries(files, flags) {
+  switch(flags.file === undefined ) {
+    case true : return files.n3;
+    default   : {
+      switch(flags.file) {
+        case 'all' : return Object.assign({}, files.n1, files.n2, files.n3, files.n4, files.n5);
+        default    : {
+          switch(files[ flags.file ] === undefined) {
+            case true : return files.n3;
+            default   : return files[ flags.file ];
+          }
+        }
+      }
+    }
+  }
+}
+
+function parse_deck(entries, trans, flags) {
+  const deck_size = flags.deck_size || 10;
+  const deck =Object.keys(entries).map( key => new Card(entries[key], entries) )
+    .sort( () => Math.random() - Math.random() );
+
+  return deck_size === 'all' ? deck : deck.slice(0, deck_size);
 }
 
 function format_deck(files) {
-  const url = window.location.toString();
+  const flags = parse_url_flags();
+  const trans   = flags.notrans ? {} : files.trans;
+  const entries = parse_entries(files, flags);
+  const deck    = parse_deck(entries, files.trans, flags);
 
-  const entries = url.includes('file=')
-    ? files[ url.match(/file=(n\d+)/)[1] ]
-    : files.n3;
+  deck.forEach( card => card.add_examples(trans) );
 
-  const deck_size = url.includes('deck_size=')
-    ? url.match(/deck_size=(\d+)/)[1]
-    : 10;
-
-  const deck = Object.keys(entries).map( key => new Card(entries[key], entries) )
-    .sort( () => Math.random() - Math.random() ).slice(0, deck_size);
-
-  console.log(deck);
-
-  append_deck(deck, entries);
+  append_deck(deck, entries, flags.notrans ? {} : files.trans);
 }
 
-async function load_json() {
-  const path = './data/n';
-  const files = [2, 3, 4, 5].map( n => `${path}${n}.json` );
+function load_json() {
+  const path  = './data/';
+  const files = ['n1', 'n2', 'n3', 'n4', 'n5', 'trans' ];
+  const promises = Object.values(files).map( file =>
+      fetch(`${path}${file}.json`).then( res => res.json() )
+  );
 
-  const n2 = await fetch(files[0]).then( res => res.json() );
-  const n3 = await fetch(files[1]).then( res => res.json() );
-  const n4 = await fetch(files[2]).then( res => res.json() );
-  const n5 = await fetch(files[3]).then( res => res.json() );
-//  const n2 = await fetch(files[0]).then( res => res.json() );
+  Promise.all(promises).then( loaded => format_deck(
+    files.reduce( (acc, file, i) => Object.assign(acc, { [file]: loaded[i] }), {} )
+  ));
+}
 
-  format_deck({n2, n3, n4, n5});
+function parse_url_flags() {
+  const url = window.location.toString();
+  const q   = url.split('?')[1] || false;
+  
+  if(!q)
+    return {};
+  else
+    return q.split('&').map( line => line.split('=') ).reduce( (acc, parts) =>
+      parts.length === 2 ? Object.assign(acc, { [parts[0]]: parts[1] }) : {}
+    , {});
 }
 
 function main() {
