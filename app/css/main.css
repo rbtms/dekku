@@ -36,6 +36,7 @@ body {
   .examples-container {
     position: relative;
     overflow-y: auto;
+    overflow-x: hidden;
     
     top: -360px;
     left: 700px;
