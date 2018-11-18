@@ -120,30 +120,13 @@ function FrontFace(props) {
   </div>;
 }
 
-class BackFace extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this._parent = props._parent;
-
-    this.level = props.level;
-    this.kanji = props.kanji;
-    this.meaning = props.meaning;
-    this.reading = props.reading;
-  }
-  
-  handle_click() {
-    this._parent.toggle_flip();
-  }
-
-  render() {
-    return <div class='back face' onClick={() => this.handle_click()}>
-      <Level level={this.level}/>
-      <Kanji kanji={this.kanji}/>
-      <Meaning meaning={this.meaning}/>
-      <Reading reading={this.reading}/>
-    </div>;
-  }
+function BackFace(props) {
+  return <div class='back face' onClick={() => props._parent.toggle_flip()}>
+    <Level level={props.level}/>
+    <Kanji kanji={props.kanji}/>
+    <Meaning meaning={props.meaning}/>
+    <Reading reading={props.reading}/>
+  </div>;
 }
 
 export default class Deck extends React.Component {

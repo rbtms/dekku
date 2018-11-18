@@ -147,35 +147,19 @@ function FrontFace(props) {
   }));
 }
 
-class BackFace extends React.Component {
-  constructor(props) {
-    super(props);
-    this._parent = props._parent;
-    this.level = props.level;
-    this.kanji = props.kanji;
-    this.meaning = props.meaning;
-    this.reading = props.reading;
-  }
-
-  handle_click() {
-    this._parent.toggle_flip();
-  }
-
-  render() {
-    return React.createElement("div", {
-      class: "back face",
-      onClick: () => this.handle_click()
-    }, React.createElement(Level, {
-      level: this.level
-    }), React.createElement(Kanji, {
-      kanji: this.kanji
-    }), React.createElement(Meaning, {
-      meaning: this.meaning
-    }), React.createElement(Reading, {
-      reading: this.reading
-    }));
-  }
-
+function BackFace(props) {
+  return React.createElement("div", {
+    class: "back face",
+    onClick: () => props._parent.toggle_flip()
+  }, React.createElement(Level, {
+    level: props.level
+  }), React.createElement(Kanji, {
+    kanji: props.kanji
+  }), React.createElement(Meaning, {
+    meaning: props.meaning
+  }), React.createElement(Reading, {
+    reading: props.reading
+  }));
 }
 
 export default class Deck extends React.Component {

@@ -79,7 +79,7 @@ class Card {
   }
 
   add_examples(trans) {
-    this.trans    = trans;
+    this.trans = trans;
     this.examples = Object.keys(trans).filter( jpn => jpn.includes(this.kanji) );
   }
 }
