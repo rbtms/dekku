@@ -74,8 +74,7 @@ class Card {
 
   add_examples(trans) {
     this.trans = trans;
-    const jpn = Object.keys(trans).sort(() => Math.random() - Math.random()).slice(0, 100);
-    this.examples = jpn.filter(_jpn => _jpn.includes(this.kanji));
+    this.examples = Object.keys(trans).filter(jpn => jpn.includes(this.kanji));
   }
 
 }
