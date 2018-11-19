@@ -40,7 +40,7 @@ export default class Config extends React.Component {
         name: 'hiragana',
         card_n: 10,
         label: 'Easy',
-        checked: true
+        checked: false
       },
       katakana: {
         name: 'katakana',
@@ -64,7 +64,7 @@ export default class Config extends React.Component {
         name: 'n3',
         card_n: 369,
         label: 'Normal',
-        checked: false
+        checked: true
       },
       n4: {
         name: 'n4',

@@ -49,11 +49,11 @@ export default class Config extends React.Component {
     this._parent = props._parent;
 
     this.decks = {
-      hiragana: { name: 'hiragana', card_n: 10, label: 'Easy', checked: true },
+      hiragana: { name: 'hiragana', card_n: 10, label: 'Easy', checked: false },
       katakana: { name: 'katakana', card_n: 10, label: 'Easy', checked: false },
       n1: { name: 'n1', card_n: 1149, label: 'Hard!',       checked: false },
       n2: { name: 'n2', card_n:  368, label: 'Quite hard!', checked: false },
-      n3: { name: 'n3', card_n:  369, label: 'Normal',      checked: false  },
+      n3: { name: 'n3', card_n:  369, label: 'Normal',      checked: true  },
       n4: { name: 'n4', card_n:  170, label: 'Easy peasy!', checked: false },
       n5: { name: 'n5', card_n:   80, label: 'Meh',         checked: false }
     };
