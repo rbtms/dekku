@@ -11,7 +11,6 @@ function Example(props) {
 export default class Examples extends React.Component {
   constructor(props) {
     super(props);
-    console.log('INIT EXAMPLES', props);
     this.is_init = false;
     this.state = {
       card: props.card

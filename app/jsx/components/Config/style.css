@@ -4,7 +4,7 @@
   top: 150px;
   
   width: 600px;
-  height: 370px;
+  height: 420px;
   
   border: 1px solid black;
   border-radius: 10px;
@@ -65,4 +65,32 @@
 .card_n {
   position: absolute;
   left: 130px;
+}
+
+#config-checkbox-label_hiragana {
+  position: relative;
+  left: -66px;
+}
+
+#config-checkbox-label_katakana {
+  position: relative;
+  left: -69px;
+}
+
+#config-checkbox_hiragana {
+  position: relative;
+  left: -66px;  
+}
+#config-checkbox_katakana {
+  position: relative;
+  left: -68px;
+}
+
+#config-checkbox-right-label_hiragana {
+  position: relative;
+  left: -66px;
+}
+#config-checkbox-right-label_katakana {
+  position: relative;
+  left: -68px;
 }

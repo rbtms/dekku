@@ -2,6 +2,7 @@
 function DeckOption(props) {
   return <div class='config-checkbox-container'>
     <label
+      id={'config-checkbox-label_'+props.name}
       class={'config-checkbox-label'}
       for={'config-checkbox_'+props.name}
     >
@@ -16,7 +17,7 @@ function DeckOption(props) {
       onChange={() => props.callback(props.name)}
     ></input>
 
-    <span>
+    <span id={'config-checkbox-right-label_'+props.name}>
       {props.label}
     </span>
 
@@ -48,9 +49,11 @@ export default class Config extends React.Component {
     this._parent = props._parent;
 
     this.decks = {
+      hiragana: { name: 'hiragana', card_n: 10, label: 'Easy', checked: true },
+      katakana: { name: 'katakana', card_n: 10, label: 'Easy', checked: false },
       n1: { name: 'n1', card_n: 1149, label: 'Hard!',       checked: false },
       n2: { name: 'n2', card_n:  368, label: 'Quite hard!', checked: false },
-      n3: { name: 'n3', card_n:  369, label: 'Normal',      checked: true  },
+      n3: { name: 'n3', card_n:  369, label: 'Normal',      checked: false  },
       n4: { name: 'n4', card_n:  170, label: 'Easy peasy!', checked: false },
       n5: { name: 'n5', card_n:   80, label: 'Meh',         checked: false }
     };
@@ -70,7 +73,8 @@ export default class Config extends React.Component {
 
   shuffle_click() {
     const decks = Object.keys(this.decks).filter( key => this.decks[key].checked);
-    this._parent.msg({ msg: 'init', decks: decks, deck_size: this.deck_size });
+
+    this._parent.msg({ msg: 'init', decks: decks.length ? decks : ['n3'], deck_size: this.deck_size });
   }
 
   render() {

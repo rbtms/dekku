@@ -2,6 +2,7 @@ function DeckOption(props) {
   return React.createElement("div", {
     class: "config-checkbox-container"
   }, React.createElement("label", {
+    id: 'config-checkbox-label_' + props.name,
     class: 'config-checkbox-label',
     for: 'config-checkbox_' + props.name
   }, props.name.toUpperCase()), React.createElement("input", {
@@ -10,7 +11,9 @@ function DeckOption(props) {
     type: "checkbox",
     defaultChecked: props.checked,
     onChange: () => props.callback(props.name)
-  }), React.createElement("span", null, props.label), React.createElement("span", {
+  }), React.createElement("span", {
+    id: 'config-checkbox-right-label_' + props.name
+  }, props.label), React.createElement("span", {
     class: "card_n"
   }, 'Cards: ' + props.card_n));
 }
@@ -33,6 +36,18 @@ export default class Config extends React.Component {
     super(props);
     this._parent = props._parent;
     this.decks = {
+      hiragana: {
+        name: 'hiragana',
+        card_n: 10,
+        label: 'Easy',
+        checked: true
+      },
+      katakana: {
+        name: 'katakana',
+        card_n: 10,
+        label: 'Easy',
+        checked: false
+      },
       n1: {
         name: 'n1',
         card_n: 1149,
@@ -49,7 +64,7 @@ export default class Config extends React.Component {
         name: 'n3',
         card_n: 369,
         label: 'Normal',
-        checked: true
+        checked: false
       },
       n4: {
         name: 'n4',
@@ -82,7 +97,7 @@ export default class Config extends React.Component {
 
     this._parent.msg({
       msg: 'init',
-      decks: decks,
+      decks: decks.length ? decks : ['n3'],
       deck_size: this.deck_size
     });
   }

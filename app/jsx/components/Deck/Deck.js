@@ -139,6 +139,7 @@ function BackFace(props) {
 export default class Deck extends React.Component {
   constructor(props) {
     super(props);
+    console.log('deck', props);
 
     this._parent = props._parent;
 

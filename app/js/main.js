@@ -5,7 +5,6 @@ import Examples from './components/Examples/Examples.js';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.files = props.files;
     this.state = {
       is_init: false,
       card: {}
@@ -19,17 +18,17 @@ class App extends React.Component {
       case 'init':
         {
           this.init(json);
-          this.setState({
-            is_init: true
-          });
           break;
         }
 
       case 'update_examples':
         {
-          this.setState({
-            card: json.card
-          });
+          if (!json.card.is_kana) {
+            this.setState({
+              card: json.card
+            });
+          }
+
           break;
         }
     }
@@ -38,17 +37,22 @@ class App extends React.Component {
   init(config) {
     console.log('init', config);
     this.config = config;
-    this.deck = this.format_deck(this.files, config);
+    this.load_json(config);
+  }
+
+  load_json(config) {
+    const path = './data/';
+    const files = config.decks.concat('trans');
+    const promises = Object.values(files).map(file => fetch(`${path}${file}.json`).then(res => res.json()));
+    Promise.all(promises).then(loaded => this.format_deck(files.reduce((acc, file, i) => Object.assign(acc, {
+      [file]: loaded[i]
+    }), {})));
   }
 
   parse_entries(files, decks) {
-    if (!decks.length) {
-      return files.n3;
-    } else {
-      const deck = {};
-      decks.forEach(name => Object.assign(deck, files[name]));
-      return deck;
-    }
+    const deck = {};
+    decks.forEach(name => Object.assign(deck, files[name]));
+    return deck;
   }
 
   parse_deck(entries, trans, deck_size) {
@@ -56,12 +60,17 @@ class App extends React.Component {
     return deck_size === Infinity ? deck : deck.slice(0, deck_size);
   }
 
-  format_deck(files, config) {
-    const trans = config.notrans ? {} : files.trans;
-    const entries = this.parse_entries(files, config.decks);
-    const deck = this.parse_deck(entries, trans, config.deck_size);
+  format_deck(files) {
+    console.log('format deck', files);
+    const trans = this.config.notrans ? {} : files.trans;
+    const entries = this.parse_entries(files, this.config.decks);
+    const deck = this.parse_deck(entries, trans, this.config.deck_size);
     deck.forEach(card => card.add_examples(trans));
-    return deck;
+    this.deck = deck;
+    this.all = deck.slice();
+    this.setState({
+      is_init: true
+    });
   }
 
   render() {
@@ -91,10 +100,11 @@ class Card {
     const option_type = Math.random() <= 0.5 ? 'on' : 'kun';
     const card = this.rand_card(entries, option_type);
     const hiragana = ('んわらやまはなたさかあっゐりみひにちしきいるゆむふ' + 'ぬつすくうゑれめへねてせけえヶをろよもほのとそこお').split('');
+    this.is_kana = !card.level;
     this.level = card.level;
-    this.kanji = card.kanji;
+    this.kanji = this.is_kana ? card.kana : card.kanji;
+    this.meaning = this.is_kana ? '' : card.meaning;
     this.reading = card.reading;
-    this.meaning = card.meaning;
     this.correct = this.rand_reading(card, option_type);
     this.options = [this.correct, this.rand_card_reading(entries, option_type), this.rand_card_reading(entries, option_type)].sort(() => Math.random() - Math.random());
   }
@@ -127,24 +137,13 @@ class Card {
 
 }
 
-function init_app(files) {
+function init_app() {
   const elem = $('#app')[0];
-  ReactDOM.render(React.createElement(App, {
-    files: files
-  }), document.body);
-}
-
-function load_json() {
-  const path = './data/';
-  const files = ['n1', 'n2', 'n3', 'n4', 'n5', 'trans'];
-  const promises = Object.values(files).map(file => fetch(`${path}${file}.json`).then(res => res.json()));
-  Promise.all(promises).then(loaded => init_app(files.reduce((acc, file, i) => Object.assign(acc, {
-    [file]: loaded[i]
-  }), {})));
+  ReactDOM.render(React.createElement(App, null), document.body);
 }
 
 function main() {
-  load_json();
+  init_app();
 }
 
 document.addEventListener('DOMContentLoaded', main);
