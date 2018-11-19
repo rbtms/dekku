@@ -46,10 +46,13 @@ class Option extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { can_click: true };
+    this._parent = props._parent;
+    
+    this.kanji = props.kanji;
+    this.option = props.option;
     this.is_correct = props.option === props.correct;
-    this.option     = props.option;
-    this._parent    = props._parent;
+
+    this.state = { can_click: true };
   }
 
   clickHandler() {
@@ -58,6 +61,9 @@ class Option extends React.Component {
 
       if(this.is_correct) {
         this._parent.add_point();
+      }
+      else {
+        this._parent.add_incorrect(this.kanji);
       }
 
       setTimeout( () => {
@@ -88,9 +94,9 @@ class Option extends React.Component {
 
 function Options(props) {
   return <div class='reading-options'>
-    <Option option={props.options[0]} correct={props.correct} _parent={props._parent}/>
-    <Option option={props.options[1]} correct={props.correct} _parent={props._parent}/>
-    <Option option={props.options[2]} correct={props.correct} _parent={props._parent}/>
+    <Option option={props.options[0]} correct={props.correct} _parent={props._parent} kanji={props.kanji}/>
+    <Option option={props.options[1]} correct={props.correct} _parent={props._parent} kanji={props.kanji}/>
+    <Option option={props.options[2]} correct={props.correct} _parent={props._parent} kanji={props.kanji}/>
   </div>;
 }
 
@@ -115,6 +121,7 @@ function FrontFace(props) {
     <Options
       options={props.options}
       correct={props.correct}
+      kanji={props.kanji}
       _parent={props._parent}
     />
   </div>;
@@ -143,7 +150,8 @@ export default class Deck extends React.Component {
     this.card = this.draw_card();
     this.deck_size = this.deck.length+1;
     
-    this.points = 0;
+    this.incorrect = [];
+    this.points    = 0;
 
     this.state = {
       card  : this.card,
@@ -160,13 +168,17 @@ export default class Deck extends React.Component {
     if( this.deck.length )
       return this.deck.shift();
     else {
-      alert(`Score: ${this.points}/${this.deck_size}`);
+      alert(`Score: ${this.points}/${this.deck_size}\nIncorrect: ${this.incorrect.join('')}`);
       return this.card;
     }
   }
 
   add_point() {
     this.points++;
+  }
+
+  add_incorrect(kanji) {
+    this.incorrect.push(kanji);
   }
 
   toggle_flip() {

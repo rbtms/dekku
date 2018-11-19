@@ -1,0 +1,190 @@
+
+@media only screen and (max-width: 400px) {
+  .deck-container {
+    width: 350px;
+    height: 460px;
+    top: 100px;
+    
+    margin: auto;
+  }
+}
+
+@media only screen and (min-width: 500px) {
+  body {
+    overflow-y: hidden;
+  }
+  .deck-container {
+    width: 300px;
+    height: 400px;
+    top: 150px;
+    left: 200px;
+  }
+}
+
+.card {
+  width  : 100%;
+  height : 100%;
+  
+  transform-style     : preserve-3d;
+  transition          : all 1s ease-in-out;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.kanji {
+  position: relative;
+  top: 30px;
+  
+  font-size: 180px;
+}
+
+.level {
+  position: absolute;
+  float: right;
+  
+  top   : 5px;
+  right : 5px;
+  
+  font-size: 25px;
+  //color: blue;
+  margin: 4px;
+  
+  //border: 1px solid black;
+  //border-radius: 100%;
+}
+
+.reading-options {
+  padding-top: 25px;
+  text-align: center;
+}
+
+.reading-option-div {
+  position: relative;
+  display: block;
+  
+  padding-top: 10px;
+}
+
+
+.option-clicked-nodisplay,
+.option-clicked-correct,
+.option-clicked-incorrect {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  
+  top: 20px;
+  left: 50px;
+  
+  border: 1px solid black;
+}
+
+.option-clicked-nodisplay {
+  //border: 1px solid black;
+  background: black;
+  border-radius: 100%;
+  width: 10px;
+  height: 10px;
+}
+
+.option-clicked-correct {
+  border: 3px solid green;
+  background: white;
+  border-radius: 100%;
+  width: 20px;
+  height: 20px;
+  
+}
+.option-clicked-incorrect {
+  background: red;
+}
+
+.reading-option {
+  padding-top: 10px;
+  font-size: 33px;
+}
+
+.meaning-div {
+  position: relative;
+  top: 10px;
+  width: 100%;
+}
+
+.meaning {
+  font-size: 17px;
+}
+
+.reading-table {
+  position: relative;
+  width: 100%;
+  height: 40%;
+  
+  top: 30px;
+  //border: 1px solid black;
+}
+
+.reading-row td, .reading-header td {
+  position: relative;
+  width: 50%;
+  height: 10px;
+}
+
+tr {
+  position: relative;
+  height: 0px;
+  width: 0px;
+  margin: 0;
+  padding: 0;
+  //border: 2px solid green;
+}
+
+.reading-header td {
+  font-size: 25px;
+  //border: 1px solid red;
+}
+
+.reading-row td {
+  font-size: 23px;
+  //border: 1px solid blue;
+}
+
+.deck-container {
+  position: relative;
+  
+  perspective: 600px;
+}
+.kanji-div {
+  position: relative;
+  width: 100%;
+  height: 50%;
+}
+.instructions {
+  position: relative;
+  left: 200px;
+  top: 250px;
+  margin: auto;
+}
+.face {
+  position : absolute;
+  height   : 100%;
+  width    : 100%;
+  backface-visibility: hidden;
+  
+  background: white;
+  
+  text-align: center;
+  
+  border        : 1px solid black;
+  border-radius : 0px 10px 0px 0px;
+  
+  cursor: pointer;
+}
+
+.face.front {
+  box-shadow: 2px 3px 2px 2px black;
+}
+
+.face.back {
+  transform: rotateY(180deg);
+  box-shadow: 2px 2px 2px 2px black;
+}
+

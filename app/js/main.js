@@ -1,39 +1,87 @@
-import Deck from './components/Deck.js';
-import Examples from './components/Examples.js';
+import Config from './components/Config/Config.js';
+import Deck from './components/Deck/Deck.js';
+import Examples from './components/Examples/Examples.js';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.deck = props.deck;
-    this.all = props.all;
+    this.files = props.files;
     this.state = {
+      is_init: false,
       card: {}
     };
   }
 
   msg(json) {
+    console.log('msg!', json);
+
     switch (json.msg) {
+      case 'init':
+        {
+          this.init(json);
+          this.setState({
+            is_init: true
+          });
+          break;
+        }
+
       case 'update_examples':
         {
           this.setState({
             card: json.card
           });
+          break;
         }
     }
   }
 
+  init(config) {
+    console.log('init', config);
+    this.config = config;
+    this.deck = this.format_deck(this.files, config);
+  }
+
+  parse_entries(files, decks) {
+    if (!decks.length) {
+      return files.n3;
+    } else {
+      const deck = {};
+      decks.forEach(name => Object.assign(deck, files[name]));
+      return deck;
+    }
+  }
+
+  parse_deck(entries, trans, deck_size) {
+    const deck = Object.keys(entries).map(key => new Card(entries[key], entries)).sort(() => Math.random() - Math.random());
+    return deck_size === Infinity ? deck : deck.slice(0, deck_size);
+  }
+
+  format_deck(files, config) {
+    const trans = config.notrans ? {} : files.trans;
+    const entries = this.parse_entries(files, config.decks);
+    const deck = this.parse_deck(entries, trans, config.deck_size);
+    deck.forEach(card => card.add_examples(trans));
+    return deck;
+  }
+
   render() {
-    return React.createElement("div", {
-      class: "app"
-    }, React.createElement(Deck, {
-      deck: this.deck,
-      all: this.all,
-      _parent: this
-    }), React.createElement(Examples, {
-      card: this.state.card,
-      _parent: this,
-      key: Math.random()
-    }));
+    if (!this.state.is_init) {
+      return React.createElement(Config, {
+        _parent: this
+      });
+    } else {
+      return React.createElement("div", {
+        class: "app"
+      }, React.createElement(Deck, {
+        deck: this.deck,
+        all: this.all,
+        _parent: this
+      }), React.createElement(Examples, {
+        card: this.state.card,
+        _parent: this,
+        key: Math.random()
+      }));
+    }
   }
 
 }
@@ -79,70 +127,20 @@ class Card {
 
 }
 
-function append_deck(deck, all) {
+function init_app(files) {
   const elem = $('#app')[0];
   ReactDOM.render(React.createElement(App, {
-    deck: deck,
-    all: all
+    files: files
   }), document.body);
-}
-
-function parse_entries(files, flags) {
-  switch (flags.file === undefined) {
-    case true:
-      return files.n3;
-
-    default:
-      {
-        switch (flags.file) {
-          case 'all':
-            return Object.assign({}, files.n1, files.n2, files.n3, files.n4, files.n5);
-
-          default:
-            {
-              switch (files[flags.file] === undefined) {
-                case true:
-                  return files.n3;
-
-                default:
-                  return files[flags.file];
-              }
-            }
-        }
-      }
-  }
-}
-
-function parse_deck(entries, trans, flags) {
-  const deck_size = flags.deck_size || 10;
-  const deck = Object.keys(entries).map(key => new Card(entries[key], entries)).sort(() => Math.random() - Math.random());
-  return deck_size === 'all' ? deck : deck.slice(0, deck_size);
-}
-
-function format_deck(files) {
-  const flags = parse_url_flags();
-  const trans = flags.notrans ? {} : files.trans;
-  const entries = parse_entries(files, flags);
-  const deck = parse_deck(entries, files.trans, flags);
-  deck.forEach(card => card.add_examples(trans));
-  append_deck(deck, entries, flags.notrans ? {} : files.trans);
 }
 
 function load_json() {
   const path = './data/';
   const files = ['n1', 'n2', 'n3', 'n4', 'n5', 'trans'];
   const promises = Object.values(files).map(file => fetch(`${path}${file}.json`).then(res => res.json()));
-  Promise.all(promises).then(loaded => format_deck(files.reduce((acc, file, i) => Object.assign(acc, {
+  Promise.all(promises).then(loaded => init_app(files.reduce((acc, file, i) => Object.assign(acc, {
     [file]: loaded[i]
   }), {})));
-}
-
-function parse_url_flags() {
-  const url = window.location.toString();
-  const q = url.split('?')[1] || false;
-  if (!q) return {};else return q.split('&').map(line => line.split('=')).reduce((acc, parts) => parts.length === 2 ? Object.assign(acc, {
-    [parts[0]]: parts[1]
-  }) : {}, {});
 }
 
 function main() {

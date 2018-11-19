@@ -1,0 +1,68 @@
+.config-container {
+  position: relative;
+  margin: auto;
+  top: 150px;
+  
+  width: 600px;
+  height: 370px;
+  
+  border: 1px solid black;
+  border-radius: 10px;
+  
+  text-align: center;
+}
+
+.config-header {
+  position: relative;
+  font-size: 35px;
+  margin: auto;
+  
+  padding-top: 30px;
+  padding-bottom: 20px;
+}
+
+.config-decks-container {
+  padding-bottom: 20px;
+}
+
+.config-checkbox-container {
+  position: relative;
+  text-align: left;
+  left: 200px;
+  
+  padding-top: 3px;
+}
+
+.config-checkbox-label {
+  padding-right: 2px;
+}
+.config-checkbox-container span {
+  padding-left: 10px;
+}
+
+.config-option-header {
+  font-size: 25px;
+}
+
+.config-container button {
+  position: relative;
+  
+  width: 100px;
+  height: 30px;
+  
+  top: 30px;
+}
+
+.config-deck_size-input {
+  margin-top: 10px;
+  width: 50px;
+}
+
+.config-input-label {
+  padding-left: 5px;
+}
+
+.card_n {
+  position: absolute;
+  left: 130px;
+}

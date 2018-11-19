@@ -1,0 +1,62 @@
+
+@media only screen and (max-width: 400px) {
+}
+
+@media only screen and (min-width: 500px) {
+  .examples-container {
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    
+    top: -360px;
+    left: 700px;
+  
+    height: 715px;
+    width: 780px;
+    background: white;
+    
+    border-left: 1px solid black;
+  }
+  .example-container {
+    display: block;
+    margin-right: 20px;
+  }
+  .example-jpn {
+    position: relative;
+    display: block;
+    
+    left: 20px;
+    padding-top: 20px;
+    
+    font-size: 25px;
+  }
+  .example-eng {
+    position: relative;
+    display: block;
+    font-size: 17px;
+    
+    left: 20px;
+    padding-top: 5px;
+  }
+}
+
+.instructions ul {
+  padding-top: 10px;
+  line-height: 18px;
+}
+
+.instruction-header {
+  margin: auto;
+  left: 0;
+  
+  font-size: 35px;
+}
+.instructions-text {
+  font-size: 20px;
+  padding-top: 20px;
+}
+ul {
+  font-size: 15px;
+}
+
+
