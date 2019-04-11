@@ -89,7 +89,7 @@ export default class Config extends React.Component {
     );
     return <div class='config-container'>
       <div class='config-header'>
-        <span>Dekku 0.1.0</span>
+        <span>Dekku 1.0.0</span>
       </div>
       
       <div class='config-decks-container'>

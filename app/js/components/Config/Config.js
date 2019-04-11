@@ -114,7 +114,7 @@ export default class Config extends React.Component {
       class: "config-container"
     }, React.createElement("div", {
       class: "config-header"
-    }, React.createElement("span", null, "Dekku 0.1.0")), React.createElement("div", {
+    }, React.createElement("span", null, "Dekku 1.0.0")), React.createElement("div", {
       class: "config-decks-container"
     }, React.createElement("span", {
       class: "config-option-header"

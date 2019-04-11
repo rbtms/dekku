@@ -31,7 +31,7 @@ export default class Examples extends React.Component {
       return <div class='examples-container'>
         <div class='instructions'>
           <span class='instruction-header'>
-            Welcome to Dekku v.0.1.0!
+            Welcome to Dekku v.1.0.0!
           </span>
           <div class='instructions-text'>
             <span>How to use:</span>

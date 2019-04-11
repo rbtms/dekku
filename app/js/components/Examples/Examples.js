@@ -39,7 +39,7 @@ export default class Examples extends React.Component {
         class: "instructions"
       }, React.createElement("span", {
         class: "instruction-header"
-      }, "Welcome to Dekku v.0.1.0!"), React.createElement("div", {
+      }, "Welcome to Dekku v.1.0.0!"), React.createElement("div", {
         class: "instructions-text"
       }, React.createElement("span", null, "How to use:"), React.createElement("ul", null, React.createElement("li", null, "Choose the settings through URL flags (further explained below)"), React.createElement("li", null, "Flip the card clicking on it"), React.createElement("li", null, "Currently not supported on chrome!"), React.createElement("li", null, "Thats it!")))));
     }
