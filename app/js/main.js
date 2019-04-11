@@ -1,6 +1,6 @@
-import Config from './components/Config/Config.js';
-import Deck from './components/Deck/Deck.js';
-import Examples from './components/Examples/Examples.js';
+import Config from './app/components/Config/Config.js';
+import Deck from './app/components/Deck/Deck.js';
+import Examples from './app/components/Examples/Examples.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -41,7 +41,7 @@ class App extends React.Component {
   }
 
   load_json(config) {
-    const path = './data/';
+    const path = './app/data/';
     const files = config.decks.concat('trans');
     const promises = Object.values(files).map(file => fetch(`${path}${file}.json`).then(res => res.json()));
     Promise.all(promises).then(loaded => this.format_deck(files.reduce((acc, file, i) => Object.assign(acc, {
@@ -139,6 +139,7 @@ class Card {
 
 function init_app() {
   const elem = $('#app')[0];
+  alert(1)
   ReactDOM.render(React.createElement(App, null), document.body);
 }
 
