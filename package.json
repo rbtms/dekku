@@ -1,7 +1,7 @@
 {
-  "name": "test",
+  "name": "dekku",
   "version": "1.0.0",
-  "description": "",
+  "description": "Simple React JLPT flipcards",
   "main": "index.js",
   "scripts": {
     "build": "babel app/jsx --out-dir app/js/",
