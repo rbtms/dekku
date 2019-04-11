@@ -1,6 +1,6 @@
-import Config from './app/components/Config/Config.js';
-import Deck from './app/components/Deck/Deck.js';
-import Examples from './app/components/Examples/Examples.js';
+import Config from './components/Config/Config.js';
+import Deck from './components/Deck/Deck.js';
+import Examples from './components/Examples/Examples.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -139,7 +139,6 @@ class Card {
 
 function init_app() {
   const elem = $('#app')[0];
-  alert(1)
   ReactDOM.render(React.createElement(App, null), document.body);
 }
 
