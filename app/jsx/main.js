@@ -1,7 +1,7 @@
 
-import Config   from './app/components/Config/Config.js';
-import Deck     from './app/components/Deck/Deck.js';
-import Examples from './app/components/Examples/Examples.js';
+import Config   from './components/Config/Config.js';
+import Deck     from './components/Deck/Deck.js';
+import Examples from './components/Examples/Examples.js';
 
 class App extends React.Component {
   constructor(props) {
