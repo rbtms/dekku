@@ -34,7 +34,7 @@ class App extends React.Component {
   }
 
   load_json(config) { 
-    const path  = './data/';
+    const path  = './app/data/';
     const files = config.decks.concat('trans');
 
     const promises = Object.values(files).map( file =>
