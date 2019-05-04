@@ -39,7 +39,16 @@ function DeckSizeField(props) {
       for={'config-deck_size-input'}
     >Cards</label>
   </div>;
-  
+}
+
+function ShuffleButton(props) {
+  return !props.clicked
+    ? <button onClick={props.callback}>
+        Shuffle!
+      </button>
+    : <button onClick={props.callback} disabled>
+        Shuffling...
+      </button>;
 }
 
 export default class Config extends React.Component {
@@ -59,6 +68,7 @@ export default class Config extends React.Component {
     };
     
     this.deck_size = 30;
+    this.state = { clicked_shuffle: false };
   }
 
   set_deck_size(e) {
@@ -75,6 +85,7 @@ export default class Config extends React.Component {
     const decks = Object.keys(this.decks).filter( key => this.decks[key].checked);
 
     this._parent.msg({ msg: 'init', decks: decks.length ? decks : ['n3'], deck_size: this.deck_size });
+    this.setState({ clicked_shuffle: true });
   }
 
   render() {
@@ -102,9 +113,7 @@ export default class Config extends React.Component {
         <DeckSizeField callback={ (e) => this.set_deck_size(e) }/>
       </div>
 
-      <button onClick={() => this.shuffle_click()}>
-        Shuffle!
-      </button>
+      <ShuffleButton callback={(e) => this.shuffle_click(e)} clicked={this.state.clicked_shuffle} />
     </div>
   }
 }

@@ -41,7 +41,7 @@ class App extends React.Component {
   }
 
   load_json(config) {
-    const path = './app/data/';
+    const path = './data/';
     const files = config.decks.concat('trans');
     const promises = Object.values(files).map(file => fetch(`${path}${file}.json`).then(res => res.json()));
     Promise.all(promises).then(loaded => this.format_deck(files.reduce((acc, file, i) => Object.assign(acc, {
