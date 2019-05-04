@@ -92,10 +92,14 @@
   border-radius: 100%;
   width: 20px;
   height: 20px;
+  top: 13px;
+  left: 43px;
   
 }
 .option-clicked-incorrect {
   background: red;
+  top: 13px;
+  left: 46px;
 }
 
 .reading-option {
